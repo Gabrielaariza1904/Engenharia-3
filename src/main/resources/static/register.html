@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Hóspedes</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header>
+        <h1>Hotel Management</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="register.html">Novo Cadastro</a>
+            <a href="guests.html">Hóspedes</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2>Cadastro de Hóspede</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="name">Nome Completo</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="cpf">CPF (apenas números)</label>
+                    <input type="text" id="cpf" maxlength="14" placeholder="123.456.789-00" required>
+                </div>
+                <div class="form-group">
+                    <label for="birthDate">Data de Nascimento</label>
+                    <input type="date" id="birthDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Telefone (apenas números)</label>
+                    <input type="text" id="phone" maxlength="15" placeholder="(99) 99999-9999" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Endereço Completo</label>
+                    <input type="text" id="address" required>
+                </div>
+                <button type="submit">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>
