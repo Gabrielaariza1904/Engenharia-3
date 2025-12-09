@@ -16,7 +16,7 @@ Criar uma aplicação web com interface amigável e simples para cadastro, consu
 ### 1. Cadastro de Hóspedes
 Permite o registro de novos hóspedes com as seguintes informações:
 - **Nome Completo**
-- **CPF** (Único no sistema e Validado)
+- **CPF** (Único no sistema e Validado com máscara)
 - **Data de Nascimento**
 - **Telefone** (Validado com máscara)
 - **E-mail** (Validado)
@@ -50,7 +50,7 @@ Permite o registro de novos hóspedes com as seguintes informações:
     - **Java 17+**
     - **Spring Boot 3** (Web Server e Dependency Injection)
     - **JDBC** (Java Database Connectivity) para implementação manual do padrão DAO.
-    - **H2 Database** (Banco de dados em memória para facilidade de testes).
+    - **SQLite** (Banco de dados relacional leve e serverless).
     - **Lombok** (Redução de boilerplate).
 
 - **Frontend**:
@@ -90,16 +90,13 @@ O projeto segue estritamente a separação de responsabilidades:
 
 3. **Acesse no navegador**:
    - Aplicação: [http://localhost:8080](http://localhost:8080)
-   - Console do Banco H2: [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
-     - **JDBC URL**: `jdbc:h2:mem:hoteldb`
-     - **User**: `sa`
-     - **Password**: `password`
+   - O banco de dados ser criado automaticamente em um arquivo chamado `hotel.db` na raiz do projeto.
 
 ---
 
 ## ✅ Verificação e Qualidade
 
-- **Máscaras de Input**: Campos vitais possuem máscaras automáticas no Frontend para garantir a integridade dos dados enviados.
+- **Máscaras de Input**: Campos de CPF e Telefone possuem máscaras automáticas no Frontend para garantir a integridade e facilitar a digitação.
 - **Tradução**: Todas as mensagens de erro e sistema estão em Português (PT-BR).
 
 ---
