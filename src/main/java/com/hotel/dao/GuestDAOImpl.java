@@ -88,6 +88,12 @@ public class GuestDAOImpl implements GuestDAO {
     }
 
     @Override
+    public void activate(Long id) {
+        String sql = "UPDATE guests SET active = true WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
+    @Override
     public boolean existsByCpf(String cpf) {
         String sql = "SELECT COUNT(*) FROM guests WHERE cpf = ?";
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, cpf);

@@ -102,7 +102,10 @@ function renderGuests(guests) {
             <td>
                 <button class="action-btn secondary" onclick="editGuest(${guest.id})">Editar</button>
                 <button class="action-btn danger" onclick="deleteGuest(${guest.id})">Excluir</button>
-                ${guest.active ? `<button class="action-btn warning" onclick="inactivateGuest(${guest.id})">Inativar</button>` : ''}
+                ${guest.active
+                ? `<button class="action-btn warning" onclick="inactivateGuest(${guest.id})">Inativar</button>`
+                : `<button class="action-btn success" onclick="activateGuest(${guest.id})">Ativar</button>`
+            }
             </td>
         `;
         tbody.appendChild(tr);
@@ -129,6 +132,22 @@ async function inactivateGuest(id) {
             loadGuests();
         } else {
             alert('Erro ao inativar');
+        }
+    } catch (err) {
+        alert('Erro de conexão: ' + err.message);
+    }
+}
+
+// Activate Guest
+async function activateGuest(id) {
+    if (!confirm('Deseja realmente reativar este hóspede?')) return;
+
+    try {
+        const response = await fetch(`${API_URL}/${id}/activate`, { method: 'PUT' });
+        if (response.ok) {
+            loadGuests();
+        } else {
+            alert('Erro ao ativar');
         }
     } catch (err) {
         alert('Erro de conexão: ' + err.message);

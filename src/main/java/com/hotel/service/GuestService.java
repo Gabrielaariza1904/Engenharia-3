@@ -63,6 +63,12 @@ public class GuestService {
     }
 
     @Transactional
+    public void activateGuest(Long id) {
+        guestDAO.activate(id);
+        logOperation("ACTIVATE", "Activated guest ID: " + id);
+    }
+
+    @Transactional
     public void deletePermanentGuest(Long id) {
         guestDAO.deletePermanent(id);
         logOperation("DELETE", "Permanently deleted guest ID: " + id);

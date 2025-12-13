@@ -15,6 +15,8 @@ public interface GuestDAO {
 
     void delete(Long id);
 
+    void activate(Long id);
+
     void deletePermanent(Long id); // Effectively inactivates
 
     boolean existsByCpf(String cpf);

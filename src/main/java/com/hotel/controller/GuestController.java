@@ -42,6 +42,16 @@ public class GuestController {
         }
     }
 
+    @PutMapping("/{id}/activate")
+    public ResponseEntity<?> activateGuest(@PathVariable Long id) {
+        try {
+            guestService.activateGuest(id);
+            return ResponseEntity.ok("Hóspede ativado com sucesso");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao ativar hóspede: " + e.getMessage());
+        }
+    }
+
     @DeleteMapping("/{id}/inactivate")
     public ResponseEntity<?> inactivateGuest(@PathVariable Long id) {
         try {
