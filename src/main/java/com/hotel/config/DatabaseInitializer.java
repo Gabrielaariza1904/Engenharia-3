@@ -28,7 +28,13 @@ public class DatabaseInitializer implements CommandLineRunner {
                         birth_date DATE,
                         phone VARCHAR(20),
                         email VARCHAR(255),
-                        address VARCHAR(255),
+                        address_street VARCHAR(255),
+                        address_number VARCHAR(20),
+                        address_zip VARCHAR(20),
+                        address_neighborhood VARCHAR(255),
+                        address_complement VARCHAR(255),
+                        address_city VARCHAR(255),
+                        address_state VARCHAR(2),
                         active BOOLEAN DEFAULT 1,
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                     )

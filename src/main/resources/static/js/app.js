@@ -21,7 +21,13 @@ if (registerForm) {
             birthDate: document.getElementById('birthDate').value,
             phone: stripNonDigits(document.getElementById('phone').value),
             email: document.getElementById('email').value,
-            address: document.getElementById('address').value
+            addressStreet: document.getElementById('addressStreet').value,
+            addressNumber: document.getElementById('addressNumber').value,
+            addressZip: document.getElementById('addressZip').value,
+            addressNeighborhood: document.getElementById('addressNeighborhood').value,
+            addressComplement: document.getElementById('addressComplement').value,
+            addressCity: document.getElementById('addressCity').value,
+            addressState: document.getElementById('addressState').value
         };
 
         try {
@@ -91,26 +97,54 @@ function renderGuests(guests) {
             <td>${guest.cpf}</td>
             <td>${guest.phone}</td>
             <td>${guest.email}</td>
+            <td>${formatAddress(guest)}</td>
             <td class="${statusClass}">${statusText}</td>
             <td>
                 <button class="action-btn secondary" onclick="editGuest(${guest.id})">Editar</button>
-                ${guest.active ? `<button class="action-btn danger" onclick="inactivateGuest(${guest.id})">Inativar</button>` : ''}
+                <button class="action-btn danger" onclick="deleteGuest(${guest.id})">Excluir</button>
+                ${guest.active ? `<button class="action-btn warning" onclick="inactivateGuest(${guest.id})">Inativar</button>` : ''}
             </td>
         `;
         tbody.appendChild(tr);
     });
 }
 
-// Inactivate Guest
+function formatAddress(guest) {
+    const parts = [];
+    if (guest.addressStreet) parts.push(guest.addressStreet);
+    if (guest.addressNumber) parts.push(guest.addressNumber);
+    if (guest.addressNeighborhood) parts.push(guest.addressNeighborhood);
+    if (guest.addressCity) parts.push(guest.addressCity);
+    if (guest.addressState) parts.push(guest.addressState);
+    return parts.join(', ') || '-';
+}
+
+// Inactivate Guest (Soft Delete)
 async function inactivateGuest(id) {
     if (!confirm('Deseja realmente inativar este hóspede?')) return;
+
+    try {
+        const response = await fetch(`${API_URL}/${id}/inactivate`, { method: 'DELETE' });
+        if (response.ok) {
+            loadGuests();
+        } else {
+            alert('Erro ao inativar');
+        }
+    } catch (err) {
+        alert('Erro de conexão: ' + err.message);
+    }
+}
+
+// Delete Guest (Hard Delete)
+async function deleteGuest(id) {
+    if (!confirm('Deseja realmente EXCLUIR permanentemente este hóspede?')) return;
 
     try {
         const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
         if (response.ok) {
             loadGuests();
         } else {
-            alert('Erro ao inativar');
+            alert('Erro ao excluir');
         }
     } catch (err) {
         alert('Erro de conexão: ' + err.message);
@@ -133,7 +167,13 @@ async function loadGuestForEdit(id) {
             document.getElementById('birthDate').value = guest.birthDate;
             document.getElementById('phone').value = guest.phone;
             document.getElementById('email').value = guest.email;
-            document.getElementById('address').value = guest.address;
+            document.getElementById('addressStreet').value = guest.addressStreet || '';
+            document.getElementById('addressNumber').value = guest.addressNumber || '';
+            document.getElementById('addressZip').value = guest.addressZip || '';
+            document.getElementById('addressNeighborhood').value = guest.addressNeighborhood || '';
+            document.getElementById('addressComplement').value = guest.addressComplement || '';
+            document.getElementById('addressCity').value = guest.addressCity || '';
+            document.getElementById('addressState').value = guest.addressState || '';
 
             // Disable CPF as it is unique and usually shouldn't be changed easily or add logic to handle check
             // document.getElementById('cpf').readOnly = true; // Enabled for updates now
@@ -152,6 +192,7 @@ async function loadGuestForEdit(id) {
 document.addEventListener('DOMContentLoaded', () => {
     const cpfInput = document.getElementById('cpf');
     const phoneInput = document.getElementById('phone');
+    const zipInput = document.getElementById('addressZip');
 
     if (cpfInput) {
         cpfInput.addEventListener('input', (e) => {
@@ -164,7 +205,19 @@ document.addEventListener('DOMContentLoaded', () => {
             e.target.value = applyPhoneMask(e.target.value);
         });
     }
+
+    if (zipInput) {
+        zipInput.addEventListener('input', (e) => {
+            e.target.value = applyZipMask(e.target.value);
+        });
+    }
 });
+
+function applyZipMask(value) {
+    value = value.replace(/\D/g, '');
+    if (value.length > 8) value = value.slice(0, 8);
+    return value.replace(/(\d{5})(\d)/, '$1-$2');
+}
 
 function applyCpfMask(value) {
     // Remove non-numeric

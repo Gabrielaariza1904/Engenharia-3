@@ -62,6 +62,12 @@ public class GuestService {
         logOperation("INACTIVATE", "Inactivated guest ID: " + id);
     }
 
+    @Transactional
+    public void deletePermanentGuest(Long id) {
+        guestDAO.deletePermanent(id);
+        logOperation("DELETE", "Permanently deleted guest ID: " + id);
+    }
+
     public List<Guest> findAll() {
         return guestDAO.findAll();
     }

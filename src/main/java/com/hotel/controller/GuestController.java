@@ -42,13 +42,23 @@ public class GuestController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}/inactivate")
     public ResponseEntity<?> inactivateGuest(@PathVariable Long id) {
         try {
             guestService.inactivateGuest(id);
             return ResponseEntity.ok("Hóspede inativado com sucesso");
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Erro ao inativar hóspede: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteGuest(@PathVariable Long id) {
+        try {
+            guestService.deletePermanentGuest(id);
+            return ResponseEntity.ok("Hóspede excluído permanentemente com sucesso");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao excluir hóspede: " + e.getMessage());
         }
     }
 

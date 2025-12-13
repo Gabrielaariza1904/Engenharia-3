@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Repository
 public class GuestDAOImpl implements GuestDAO {
@@ -22,28 +24,48 @@ public class GuestDAOImpl implements GuestDAO {
         guest.setId(rs.getLong("id"));
         guest.setName(rs.getString("name"));
         guest.setCpf(rs.getString("cpf"));
-        guest.setBirthDate(rs.getDate("birth_date") != null ? rs.getDate("birth_date").toLocalDate() : null);
+
+        String birthDateStr = rs.getString("birth_date");
+        if (birthDateStr != null) {
+            guest.setBirthDate(LocalDate.parse(birthDateStr));
+        }
+
         guest.setPhone(rs.getString("phone"));
         guest.setEmail(rs.getString("email"));
-        guest.setAddress(rs.getString("address"));
-        guest.setActive(rs.getBoolean("active"));
-        guest.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+        guest.setAddressStreet(rs.getString("address_street"));
+        guest.setAddressNumber(rs.getString("address_number"));
+        guest.setAddressZip(rs.getString("address_zip"));
+        guest.setAddressNeighborhood(rs.getString("address_neighborhood"));
+        guest.setAddressComplement(rs.getString("address_complement"));
+        guest.setAddressCity(rs.getString("address_city"));
+        guest.setAddressState(rs.getString("address_state"));
+        guest.setActive(rs.getInt("active") == 1);
+
+        String createdAtStr = rs.getString("created_at");
+        if (createdAtStr != null) {
+            guest.setCreatedAt(LocalDateTime.parse(createdAtStr));
+        }
+
         return guest;
     };
 
     @Override
     public void save(Guest guest) {
-        String sql = "INSERT INTO guests (name, cpf, birth_date, phone, email, address, active, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO guests (name, cpf, birth_date, phone, email, address_street, address_number, address_zip, address_neighborhood, address_complement, address_city, address_state, active, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, guest.getName(), guest.getCpf(), guest.getBirthDate(), guest.getPhone(),
-                guest.getEmail(), guest.getAddress(), guest.isActive(), guest.getCreatedAt());
+                guest.getEmail(), guest.getAddressStreet(), guest.getAddressNumber(), guest.getAddressZip(),
+                guest.getAddressNeighborhood(), guest.getAddressComplement(), guest.getAddressCity(),
+                guest.getAddressState(), guest.isActive(), guest.getCreatedAt());
     }
 
     @Override
     public void update(Guest guest) {
-        String sql = "UPDATE guests SET name = ?, cpf = ?, birth_date = ?, phone = ?, email = ?, address = ? WHERE id = ?";
+        String sql = "UPDATE guests SET name = ?, cpf = ?, birth_date = ?, phone = ?, email = ?, address_street = ?, address_number = ?, address_zip = ?, address_neighborhood = ?, address_complement = ?, address_city = ?, address_state = ? WHERE id = ?";
         jdbcTemplate.update(sql, guest.getName(), guest.getCpf(), guest.getBirthDate(), guest.getPhone(),
                 guest.getEmail(),
-                guest.getAddress(), guest.getId());
+                guest.getAddressStreet(), guest.getAddressNumber(), guest.getAddressZip(),
+                guest.getAddressNeighborhood(), guest.getAddressComplement(), guest.getAddressCity(),
+                guest.getAddressState(), guest.getId());
     }
 
     @Override
@@ -84,5 +106,11 @@ public class GuestDAOImpl implements GuestDAO {
         String sql = "SELECT COUNT(*) FROM guests WHERE cpf = ? AND id != ?";
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, cpf, id);
         return count != null && count > 0;
+    }
+
+    @Override
+    public void deletePermanent(Long id) {
+        String sql = "DELETE FROM guests WHERE id = ?";
+        jdbcTemplate.update(sql, id);
     }
 }

@@ -13,7 +13,9 @@ public interface GuestDAO {
 
     List<Guest> findAll();
 
-    void delete(Long id); // Effectively inactivates
+    void delete(Long id);
+
+    void deletePermanent(Long id); // Effectively inactivates
 
     boolean existsByCpf(String cpf);
 

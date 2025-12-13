@@ -10,7 +10,13 @@ public class Guest {
     private LocalDate birthDate;
     private String phone;
     private String email;
-    private String address;
+    private String addressStreet;
+    private String addressNumber;
+    private String addressZip; // CEP
+    private String addressNeighborhood;
+    private String addressComplement;
+    private String addressCity;
+    private String addressState;
     private boolean active;
     private LocalDateTime createdAt;
 
@@ -63,12 +69,60 @@ public class Guest {
         this.email = email;
     }
 
-    public String getAddress() {
-        return address;
+    public String getAddressStreet() {
+        return addressStreet;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAddressStreet(String addressStreet) {
+        this.addressStreet = addressStreet;
+    }
+
+    public String getAddressNumber() {
+        return addressNumber;
+    }
+
+    public void setAddressNumber(String addressNumber) {
+        this.addressNumber = addressNumber;
+    }
+
+    public String getAddressZip() {
+        return addressZip;
+    }
+
+    public void setAddressZip(String addressZip) {
+        this.addressZip = addressZip;
+    }
+
+    public String getAddressNeighborhood() {
+        return addressNeighborhood;
+    }
+
+    public void setAddressNeighborhood(String addressNeighborhood) {
+        this.addressNeighborhood = addressNeighborhood;
+    }
+
+    public String getAddressComplement() {
+        return addressComplement;
+    }
+
+    public void setAddressComplement(String addressComplement) {
+        this.addressComplement = addressComplement;
+    }
+
+    public String getAddressCity() {
+        return addressCity;
+    }
+
+    public void setAddressCity(String addressCity) {
+        this.addressCity = addressCity;
+    }
+
+    public String getAddressState() {
+        return addressState;
+    }
+
+    public void setAddressState(String addressState) {
+        this.addressState = addressState;
     }
 
     public boolean isActive() {
